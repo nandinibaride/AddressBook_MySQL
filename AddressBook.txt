@@ -1,0 +1,379 @@
+UC1_CreateAddressbook
+
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.26 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database Addressbook;
+Query OK, 1 row affected (2.48 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| addressbook        |
+| college            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+8 rows in set (1.15 sec)
+---------------------------------------------------------------------------------------------------------------------------
+
+UC2_CreateAddressBookusingdetails
+
+mysql> use addressbook;
+Database changed
+mysql> create table PersonDetalis(
+    -> firstname varchar(50) not Null,
+    -> lastname varchar(55) not Null,
+    -> address varchar(160) not Null,
+    -> city varchar(40) not Null,
+    -> state varchar(50) not Null,
+    -> zip varchar(90) not Null,
+    -> phonenumber varchar(12),
+    -> email varchar(190)
+    -> );
+Query OK, 0 rows affected (3.11 sec)
+
+mysql> desc PersonDetails;
+ERROR 1146 (42S02): Table 'addressbook.persondetails' doesn't exist
+mysql> desc PersonDetalis;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| firstname   | varchar(50)  | NO   |     | NULL    |       |
+| lastname    | varchar(55)  | NO   |     | NULL    |       |
+| address     | varchar(160) | NO   |     | NULL    |       |
+| city        | varchar(40)  | NO   |     | NULL    |       |
+| state       | varchar(50)  | NO   |     | NULL    |       |
+| zip         | varchar(90)  | NO   |     | NULL    |       |
+| phonenumber | varchar(12)  | YES  |     | NULL    |       |
+| email       | varchar(190) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+8 rows in set (0.26 sec)
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+UC3_InsertPersonDetails
+
+mysql> insert into PersonDetalis(firstname,lastname,address,city,state,zip,phonenumber,email)values("Nandini","Baride","Kolhe nager","Latur","Mahrashtra","12345","912536778","nandu1233@gmail.com");
+Query OK, 1 row affected (0.33 sec)
+
+mysql> select * form PersonDetalis;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form PersonDetalis' at line 1
+mysql> select * from PersonDetalis;
++-----------+----------+-------------+-------+------------+-------+-------------+---------------------+
+| firstname | lastname | address     | city  | state      | zip   | phonenumber | email               |
++-----------+----------+-------------+-------+------------+-------+-------------+---------------------+
+| Nandini   | Baride   | Kolhe nager | Latur | Mahrashtra | 12345 | 912536778   | nandu1233@gmail.com |
++-----------+----------+-------------+-------+------------+-------+-------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into PersonDetalis(firstname,lastname,address,city,state,zip,phonenumber,email)values("Vaishu","Bhosle","Ingle nager","Ausa","Mahrashtra","12345","912536778","vaishu1233@gmail.com");
+Query OK, 1 row affected (0.17 sec)
+
+mysql> select * from PersonDetalis;
++-----------+----------+-------------+-------+------------+-------+-------------+----------------------+
+| firstname | lastname | address     | city  | state      | zip   | phonenumber | email                |
++-----------+----------+-------------+-------+------------+-------+-------------+----------------------+
+| Nandini   | Baride   | Kolhe nager | Latur | Mahrashtra | 12345 | 912536778   | nandu1233@gmail.com  |
+| Vaishu    | Bhosle   | Ingle nager | Ausa  | Mahrashtra | 12345 | 912536778   | vaishu1233@gmail.com |
++-----------+----------+-------------+-------+------------+-------+-------------+----------------------+
+2 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+UC4_EditPersonDetalis
+
+mysql> update PersonDetalis
+    -> set city='pune',address='ganesh nager'where firstname="Nandini";
+Query OK, 1 row affected (0.41 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * form PersonDetalis;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'form PersonDetalis' at line 1
+mysql> select * from PersonDetalis;
++-----------+----------+--------------+------+------------+-------+-------------+----------------------+
+| firstname | lastname | address      | city | state      | zip   | phonenumber | email                |
++-----------+----------+--------------+------+------------+-------+-------------+----------------------+
+| Nandini   | Baride   | ganesh nager | pune | Mahrashtra | 12345 | 912536778   | nandu1233@gmail.com  |
+| Vaishu    | Bhosle   | Ingle nager  | Ausa | Mahrashtra | 12345 | 912536778   | vaishu1233@gmail.com |
++-----------+----------+--------------+------+------------+-------+-------------+----------------------+
+2 rows in set (0.08 sec)
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+UC5_DeletePersonDetails
+
+mysql> delete from PersonDetalis
+    -> where firstname="vaishu";
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from PersonDetalis;
++-----------+----------+--------------+------+------------+-------+-------------+---------------------+
+| firstname | lastname | address      | city | state      | zip   | phonenumber | email               |
++-----------+----------+--------------+------+------------+-------+-------------+---------------------+
+| Nandini   | Baride   | ganesh nager | pune | Mahrashtra | 12345 | 912536778   | nandu1233@gmail.com |
++-----------+----------+--------------+------+------------+-------+-------------+---------------------+
+1 row in set (0.13 sec)
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+UC6_RetravingDetalisUsingStateOrCity
+
+mysql> use addressbook;
+Database changed
+mysql> select * from PersonDetalis;
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from PersonDetalis
+    -> where city = "Surat";
++-----------+-------------+-------------+-------+------------+--------+-------------+----------------------+
+| firstname | lastname    | address     | city  | state      | zip    | phonenumber | email                |
++-----------+-------------+-------------+-------+------------+--------+-------------+----------------------+
+| Prachi    | Ansarwadkar | Shree nager | Surat | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com |
+| Prachi    | Ansarwadkar | Shree nager | Surat | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com |
++-----------+-------------+-------------+-------+------------+--------+-------------+----------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from PersonDetalis
+    -> where state = "Mahrashtra";
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+
+6 rows in set (0.00 sec)
+-------------------------------------------------------------------------------------------------------------------------------------
+
+UC7_CheckCount
+
+mysql> select count(City) from PersonDetalis
+    -> where city = "Surat";
++-------------+
+| count(City) |
++-------------+
+|           2 |
++-------------+
+1 row in set (0.07 sec)
+
+mysql> select count(state) from PersonDetalis
+    -> where state = "Mahrashtra";
++--------------+
+| count(state) |
++--------------+
+|            6 |
++--------------+
+1 row in set (0.00 sec)
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+UC8_SortAlphabeticallyByFirtName
+
+mysql> select firstname from PersonDetalis ORDER BY firstname;
++-----------+
+| firstname |
++-----------+
+| Nandini   |
+| Patu      |
+| Prachi    |
+| Prachi    |
+| Shivani   |
+| Shri      |
++-----------+
+6 rows in set (0.06 sec)
+
+mysql> select city from PersonDetalis ORDER BY city;
++------------+
+| city       |
++------------+
+| Aurangabad |
+| mumbai     |
+| pune       |
+| Solapur    |
+| Surat      |
+| Surat      |
++------------+
+6 rows in set (0.00 sec)
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+UC9_CretaeMultipleAddressBook
+
+
+mysql> update PersonDetalis
+    -> set contact_type ='family',where firstname="Nandini";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where firstname="Nandini"' at line 2
+mysql> select * from PersonDetalis;
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 | contact_type |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   | NULL         |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    | NULL         |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    | NULL         |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | NULL         |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com | NULL         |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | NULL         |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> update PersonDetalis
+    -> set contact_type ='family' where firstname="Nandini";
+Query OK, 1 row affected (0.14 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from PersonDetalis;
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 | contact_type |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   | family       |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    | NULL         |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    | NULL         |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | NULL         |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com | NULL         |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | NULL         |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+6 rows in set (0.03 sec)
+
+mysql> update PersonDetalis
+    -> set contact_type ='friends',where firstname="shri";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where firstname="shri"' at line 2
+mysql> update PersonDetalis
+    -> set contact_type ='family' where firstname="Shri";
+Query OK, 1 row affected (0.18 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from PersonDetalis;
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 | contact_type |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   | family       |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    | family       |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    | NULL         |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | NULL         |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com | NULL         |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | NULL         |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+6 rows in set (0.12 sec)
+
+mysql> update PersonDetalis
+    -> set contact_type ='friend' where firstname="Patu";
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from PersonDetalis;
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 | contact_type |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   | family       |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    | family       |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    | friend       |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | NULL         |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com | NULL         |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | NULL         |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> update PersonDetalis
+    -> set contact_type ='friend' where firstname="Prachi";
+Query OK, 2 rows affected (0.10 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from PersonDetalis;
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 | contact_type |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   | family       |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    | family       |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    | friend       |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | friend       |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com | NULL         |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | friend       |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> update PersonDetalis
+    -> set contact_type ='family' where firstname="Shivani";
+Query OK, 1 row affected (0.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from PersonDetalis;
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 | contact_type |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   | family       |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    | family       |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    | friend       |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | friend       |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com | family       |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | friend       |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+6 rows in set (0.00 sec)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+UC10_CountContactType
+
+mysql> select count(*) from PersonDetalis where contact_type = "friend";
++----------+
+| count(*) |
++----------+
+|        3 |
++----------+
+1 row in set (0.06 sec)
+
+mysql> select count(family) from PersonDetalis where contact_type = "family";
+ERROR 1054 (42S22): Unknown column 'family' in 'field list'
+mysql> select count(*) from PersonDetalis where contact_type = "family";
++----------+
+| count(*) |
++----------+
+|        3 |
++----------+
+1 row in set (0.00 sec)
+------------------------------------------------------------------------------------------------------
+
+UC11_AddPersonIntwoAddtessbook
+
+mysql> insert into PersonDetalis(firstname,lastname,address,city,state,zip,phonenumber,email,contact_type)values("Nandini","Baride","Kolhe nager","Latur","Mahrashtra","12345","912536778","nandu1233@gmail.com","friend");
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from PersonDetalis;
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| firstname | lastname    | address      | city       | state      | zip    | phonenumber | email                 | contact_type |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+| Nandini   | Baride      | ganesh nager | pune       | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   | family       |
+| Shri      | Kale        | Ram nager    | mumbai     | Mahrashtra | 949082 | 9142673989  | shri1233@gmail.com    | family       |
+| Patu      | Ronge       | Shiv nager   | Solapur    | Mahrashtra | 949081 | 9146479689  | patu1233@gmail.com    | friend       |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | friend       |
+| Shivani   | Pawar       | Krisnh nager | Aurangabad | Mahrashtra | 949081 | 91464792389 | shivani1233@gmail.com | family       |
+| Prachi    | Ansarwadkar | Shree nager  | Surat      | Mahrashtra | 941082 | 91566233989 | prachi1233@gmail.com  | friend       |
+| Nandini   | Baride      | Kolhe nager  | Latur      | Mahrashtra | 12345  | 912536778   | nandu1233@gmail.com   | friend       |
++-----------+-------------+--------------+------------+------------+--------+-------------+-----------------------+--------------+
+7 rows in set (0.12 sec)
+-------------------------------------------------------------------------------------------------------------------------
