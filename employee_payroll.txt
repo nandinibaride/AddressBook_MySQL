@@ -1,0 +1,259 @@
+mysql> create database Payroll_Service;
+Query OK, 1 row affected (1.38 sec)
+
+UC1-->
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| addressbook        |
+| college            |
+| information_schema |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+9 rows in set (0.46 sec)
+------------------------------------------------------------------------------------------------------------------------------------
+UC2-->
+
+mysql> create table Employee_Payroll(
+    -> ID int unsigned not null auto_increment primary key,
+    -> NAME varchar(150) not null,
+    -> SALARY double not null,
+    -> START_DATE date not null
+    -> );
+Query OK, 0 rows affected (5.32 sec)
+
+mysql> describe Employee_Payroll;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| ID         | int unsigned | NO   | PRI | NULL    | auto_increment |
+| NAME       | varchar(150) | NO   |     | NULL    |                |
+| SALARY     | double       | NO   |     | NULL    |                |
+| START_DATE | date         | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.20 sec)
+------------------------------------------------------------------------------------------------------------------------------------------
+UC3-->
+
+mysql> insert into Employee_Payroll(NAME,SALARY,START_DATE) values
+    ->  ("Bill", 100000.00, "2015-05-03"),
+    -> ("Charlie",4000000.00, "2016-10-11"),
+    -> ("Mark", 200000.00, "2018-04-23");
+Query OK, 3 rows affected (0.48 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employee_Payroll;
++----+---------+---------+------------+
+| ID | NAME    | SALARY  | START_DATE |
++----+---------+---------+------------+
+|  1 | Bill    |  100000 | 2015-05-03 |
+|  2 | Charlie | 4000000 | 2016-10-11 |
+|  3 | Mark    |  200000 | 2018-04-23 |
++----+---------+---------+------------+
+3 rows in set (0.00 sec)
+------------------------------------------------------------------------------------------------------------------------------
+UC4-->
+
+mysql> select SALARY from Employee_Payroll where Name = "Bill";
++--------+
+| SALARY |
++--------+
+| 100000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee_payroll where START_DATE between cast("2018-01-01" as date) and date (NOW());
++----+------+--------+------------+
+| ID | NAME | SALARY | START_DATE |
++----+------+--------+------------+
+|  3 | Mark | 200000 | 2018-04-23 |
++----+------+--------+------------+
+1 row in set (0.09 sec)
+
+----------------------------------------------------------------------------------------------------------------------
+UC5-->
+
+mysql> alter table employee_payroll add GENDER char not null after NAME;
+Query OK, 0 rows affected (2.71 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add GENDER char not null after NAME;
+ERROR 1060 (42S21): Duplicate column name 'GENDER'
+mysql> alter table employee_payroll add GENDER char not null after NAME;
+ERROR 1060 (42S21): Duplicate column name 'GENDER'
+mysql> select * from Employee_Payroll;
++----+---------+--------+---------+------------+
+| ID | NAME    | GENDER | SALARY  | START_DATE |
++----+---------+--------+---------+------------+
+|  1 | Bill    |        |  100000 | 2015-05-03 |
+|  2 | Charlie |        | 4000000 | 2016-10-11 |
+|  3 | Mark    |        |  200000 | 2018-04-23 |
++----+---------+--------+---------+------------+
+3 rows in set (0.00 sec)
+--------------------------------------------------------------------------------------------------------------------
+UC6-->
+
+mysql> update employee_payroll set GENDER = 'M' where NAME = "Bill", NAME = "Charlie" or Name = "Mark";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ', NAME = "Charlie" or Name = "Mark"' at line 1
+mysql> update employee_payroll set GENDER = 'M' where NAME = "Bill";
+Query OK, 1 row affected (0.22 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Employee_Payroll;
++----+---------+--------+---------+------------+
+| ID | NAME    | GENDER | SALARY  | START_DATE |
++----+---------+--------+---------+------------+
+|  1 | Bill    | M      |  100000 | 2015-05-03 |
+|  2 | Charlie |        | 4000000 | 2016-10-11 |
+|  3 | Mark    |        |  200000 | 2018-04-23 |
++----+---------+--------+---------+------------+
+3 rows in set (0.13 sec)
+
+mysql> update employee_payroll set GENDER = 'M' where NAME = "Charlie";
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Employee_Payroll;
++----+---------+--------+---------+------------+
+| ID | NAME    | GENDER | SALARY  | START_DATE |
++----+---------+--------+---------+------------+
+|  1 | Bill    | M      |  100000 | 2015-05-03 |
+|  2 | Charlie | M      | 4000000 | 2016-10-11 |
+|  3 | Mark    |        |  200000 | 2018-04-23 |
++----+---------+--------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update employee_payroll set GENDER = 'M' where NAME = "Mark";
+Query OK, 1 row affected (0.20 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Employee_Payroll;
++----+---------+--------+---------+------------+
+| ID | NAME    | GENDER | SALARY  | START_DATE |
++----+---------+--------+---------+------------+
+|  1 | Bill    | M      |  100000 | 2015-05-03 |
+|  2 | Charlie | M      | 4000000 | 2016-10-11 |
+|  3 | Mark    | M      |  200000 | 2018-04-23 |
++----+---------+--------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into employee_payroll (NAME, GENDER, SALARY, START_DATE) value
+    -> ("VAISHU",'F'500000.00,"2020-02-06");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '500000.00,"2020-02-06")' at line 2
+mysql> insert into Employee_Payroll (NAME, GENDER, SALARY, START_DATE) value
+    -> ("VAISHU",'F','500000.00',"2020-02-06");
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from Employee_Payroll;
++----+---------+--------+---------+------------+
+| ID | NAME    | GENDER | SALARY  | START_DATE |
++----+---------+--------+---------+------------+
+|  1 | Bill    | M      |  100000 | 2015-05-03 |
+|  2 | Charlie | M      | 4000000 | 2016-10-11 |
+|  3 | Mark    | M      |  200000 | 2018-04-23 |
+|  4 | VAISHU  | F      |  500000 | 2020-02-06 |
++----+---------+--------+---------+------------+
+4 rows in set (0.14 sec)
+
+mysql> insert into employee_payroll (NAME, GENDER, SALARY, START_DATE) value
+    -> ("ANGLE",'F'200000.00,"2020-02-03");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '200000.00,"2020-02-03")' at line 2
+mysql> insert into employee_payroll (NAME, GENDER, SALARY, START_DATE) value
+    -> ("ANGLE",'F','200000.00',"2020-02-03");
+Query OK, 1 row affected (0.22 sec)
+
+mysql> select * from Employee_Payroll;
++----+---------+--------+---------+------------+
+| ID | NAME    | GENDER | SALARY  | START_DATE |
++----+---------+--------+---------+------------+
+|  1 | Bill    | M      |  100000 | 2015-05-03 |
+|  2 | Charlie | M      | 4000000 | 2016-10-11 |
+|  3 | Mark    | M      |  200000 | 2018-04-23 |
+|  4 | VAISHU  | F      |  500000 | 2020-02-06 |
+|  5 | ANGLE   | F      |  200000 | 2020-02-03 |
++----+---------+--------+---------+------------+
+5 rows in set (0.00 sec)
+---------------------------------------------------------------------------------------------------------------------
+UC7-->
+
+mysql> select sum(SALARY) from Employee_Payroll where GENDER = 'M' group by GENDER;
++-------------+
+| sum(SALARY) |
++-------------+
+|     4300000 |
++-------------+
+1 row in set (0.11 sec)
+
+mysql> select sum(SALARY) from Employee_Payroll where GENDER = 'F' group by GENDER;
++-------------+
+| sum(SALARY) |
++-------------+
+|      700000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(SALARY) from Employee_Payroll where GENDER = 'M' group by GENDER;
++--------------------+
+| avg(SALARY)        |
++--------------------+
+| 1433333.3333333333 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select avg(SALARY) from Employee_Payroll group by GENDER;
++--------------------+
+| avg(SALARY)        |
++--------------------+
+| 1433333.3333333333 |
+|             350000 |
++--------------------+
+2 rows in set (0.09 sec)
+
+mysql> select GENDER,avg(SALARY) from Employee_Payroll group by GENDER;
++--------+--------------------+
+| GENDER | avg(SALARY)        |
++--------+--------------------+
+| M      | 1433333.3333333333 |
+| F      |             350000 |
++--------+--------------------+
+2 rows in set (0.00 sec)
+
+mysql> select max(SALARY) from Employee_Payroll;
++-------------+
+| max(SALARY) |
++-------------+
+|     4000000 |
++-------------+
+1 row in set (0.01 sec)
+
+mysql> select min(SALARY) from Employee_Payroll;
++-------------+
+| min(SALARY) |
++-------------+
+|      100000 |
++-------------+
+1 row in set (0.07 sec)
+
+mysql> select NAME,GENDER,max(SALARY) from Employee_Payroll group by GENDER;
++--------+--------+-------------+
+| NAME   | GENDER | max(SALARY) |
++--------+--------+-------------+
+| Bill   | M      |     4000000 |
+| VAISHU | F      |      500000 |
++--------+--------+-------------+
+2 rows in set (0.06 sec)
+
+mysql> select NAME,GENDER,min(SALARY) from Employee_Payroll group by GENDER;
++--------+--------+-------------+
+| NAME   | GENDER | min(SALARY) |
++--------+--------+-------------+
+| Bill   | M      |      100000 |
+| VAISHU | F      |      200000 |
++--------+--------+-------------+
+2 rows in set (0.00 sec)
