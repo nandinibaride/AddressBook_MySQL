@@ -257,3 +257,92 @@ mysql> select NAME,GENDER,min(SALARY) from Employee_Payroll group by GENDER;
 | VAISHU | F      |      200000 |
 +--------+--------+-------------+
 2 rows in set (0.00 sec)
+--------------------------------------------------------------------------------------------------------------
+
+UC8-->Extent_Payroll
+
+mysql>  alter table Employee_Payroll add phone_number bigint after NAME;
+Query OK, 0 rows affected (15.00 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employee_Payroll;
++----+---------+--------------+--------+---------+------------+
+| ID | NAME    | phone_number | GENDER | SALARY  | START_DATE |
++----+---------+--------------+--------+---------+------------+
+|  1 | Bill    |         NULL | M      |  100000 | 2015-05-03 |
+|  2 | Charlie |         NULL | M      | 4000000 | 2016-10-11 |
+|  3 | Mark    |         NULL | M      |  200000 | 2018-04-23 |
+|  4 | VAISHU  |         NULL | F      |  500000 | 2020-02-06 |
+|  5 | ANGLE   |         NULL | F      |  200000 | 2020-02-03 |
++----+---------+--------------+--------+---------+------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table Employee_Payroll add address varchar(300) after phone_number;
+Query OK, 0 rows affected (5.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employee_Payroll;
++----+---------+--------------+---------+--------+---------+------------+
+| ID | NAME    | phone_number | address | GENDER | SALARY  | START_DATE |
++----+---------+--------------+---------+--------+---------+------------+
+|  1 | Bill    |         NULL | NULL    | M      |  100000 | 2015-05-03 |
+|  2 | Charlie |         NULL | NULL    | M      | 4000000 | 2016-10-11 |
+|  3 | Mark    |         NULL | NULL    | M      |  200000 | 2018-04-23 |
+|  4 | VAISHU  |         NULL | NULL    | F      |  500000 | 2020-02-06 |
+|  5 | ANGLE   |         NULL | NULL    | F      |  200000 | 2020-02-03 |
++----+---------+--------------+---------+--------+---------+------------+
+5 rows in set (0.02 sec)
+
+mysql> alter table Employee_Payroll add Department varchar(150) not null after address;
+Query OK, 0 rows affected (4.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee_payroll add Basic_Pay double not null after address;
+Query OK, 0 rows affected (2.94 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employee_Payroll;
++----+---------+--------------+---------+-----------+------------+--------+---------+------------+
+| ID | NAME    | phone_number | address | Basic_Pay | Department | GENDER | SALARY  | START_DATE |
++----+---------+--------------+---------+-----------+------------+--------+---------+------------+
+|  1 | Bill    |         NULL | NULL    |         0 |            | M      |  100000 | 2015-05-03 |
+|  2 | Charlie |         NULL | NULL    |         0 |            | M      | 4000000 | 2016-10-11 |
+|  3 | Mark    |         NULL | NULL    |         0 |            | M      |  200000 | 2018-04-23 |
+|  4 | VAISHU  |         NULL | NULL    |         0 |            | F      |  500000 | 2020-02-06 |
+|  5 | ANGLE   |         NULL | NULL    |         0 |            | F      |  200000 | 2020-02-03 |
++----+---------+--------------+---------+-----------+------------+--------+---------+------------+
+5 rows in set (0.04 sec)
+---------------------------------------------------------------------------------------------------------------------
+UC9-->Extent_Payroll
+
+mysql> alter table Employee_Payroll add Deductions varchar(300) after Basic_Pay;
+Query OK, 0 rows affected (2.61 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> alter table Employee_Payroll add Taxable_Pay double not null after Deductions;
+Query OK, 0 rows affected (4.49 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Employee_Payroll add Income_Tax double not null after Taxable_Pay;
+Query OK, 0 rows affected (3.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table Employee_Payroll add Net_Pay double not null after Income_Tax;
+Query OK, 0 rows affected (2.73 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employee_Payroll;
++----+---------+--------------+---------+-----------+------------+-------------+------------+---------+------------+--------+---------+------------+
+| ID | NAME    | phone_number | address | Basic_Pay | Deductions | Taxable_Pay | Income_Tax | Net_Pay | Department | GENDER | SALARY  | START_DATE |
++----+---------+--------------+---------+-----------+------------+-------------+------------+---------+------------+--------+---------+------------+
+|  1 | Bill    |         NULL | NULL    |         0 | NULL       |           0 |          0 |       0 |            | M      |  100000 | 2015-05-03 |
+|  2 | Charlie |         NULL | NULL    |         0 | NULL       |           0 |          0 |       0 |            | M      | 4000000 | 2016-10-11 |
+|  3 | Mark    |         NULL | NULL    |         0 | NULL       |           0 |          0 |       0 |            | M      |  200000 | 2018-04-23 |
+|  4 | VAISHU  |         NULL | NULL    |         0 | NULL       |           0 |          0 |       0 |            | F      |  500000 | 2020-02-06 |
+|  5 | ANGLE   |         NULL | NULL    |         0 | NULL       |           0 |          0 |       0 |            | F      |  200000 | 2020-02-03 |
++----+---------+--------------+---------+-----------+------------+-------------+------------+---------+------------+--------+---------+------------+
+5 rows in set (0.00 sec)
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
